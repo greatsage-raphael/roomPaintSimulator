@@ -6,7 +6,7 @@ interface CameraFeedProps {
   selectedColor: string
 }
 
-const CameraFeed = ({ selectedColor }: CameraFeedProps) => {
+const CameraFeed = ({ selectedColor: _ }: CameraFeedProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
