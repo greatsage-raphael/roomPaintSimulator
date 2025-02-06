@@ -1,35 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
-import CameraFeed from './components/CameraFeed'
+import ImageUpload from './components/ImageUpload'
 import ColorPicker from './components/ColorPicker'
 import SettingsPanel from './components/SettingsPanel'
-import { checkWebXRSupport } from './utils/webXRUtils'
 
 function App() {
-  const [isWebXRSupported, setIsWebXRSupported] = useState<boolean>(false)
   const [selectedColor, setSelectedColor] = useState<string>('#FFFFFF')
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
 
-  useEffect(() => {
-    const checkSupport = async () => {
-      const supported = await checkWebXRSupport()
-      setIsWebXRSupported(supported)
-    }
-    checkSupport()
-  }, [])
-
-  if (!isWebXRSupported) {
-    return (
-      <div className="error-container">
-        <h2>WebXR Not Supported</h2>
-        <p>Your browser doesn't support WebXR. Please use a compatible browser.</p>
-      </div>
-    )
-  }
-
   return (
     <div className="app-container">
-      <CameraFeed selectedColor={selectedColor} />
+      <ImageUpload selectedColor={selectedColor} />
       <div className="controls-container">
         <ColorPicker 
           selectedColor={selectedColor} 

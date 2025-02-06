@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { initializeWebXR } from '../utils/webXRUtils'
+import { useEffect, useRef, useState } from 'react'
+import { checkWebXRSupport, initializeWebXR } from '../utils/webXRUtils'
 import '../styles/CameraFeed.css'
 
 interface CameraFeedProps {
@@ -8,12 +8,28 @@ interface CameraFeedProps {
 
 const CameraFeed = ({ selectedColor: _ }: CameraFeedProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isWebXRSupported, setIsWebXRSupported] = useState<boolean>(true)
 
   useEffect(() => {
-    if (canvasRef.current) {
-      initializeWebXR(canvasRef.current)
+    const checkSupport = async () => {
+      const supported = await checkWebXRSupport()
+      setIsWebXRSupported(supported)
+      
+      if (supported && canvasRef.current) {
+        initializeWebXR(canvasRef.current)
+      }
     }
+    
+    checkSupport()
   }, [])
+
+  if (!isWebXRSupported) {
+    return (
+      <div className="camera-feed-container">
+        <p>WebXR Not Supported. Please use a compatible browser.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="camera-feed-container">
